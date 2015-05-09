@@ -3,3 +3,4 @@ target/*
 .idea/*
 cpdap.iml
 derby.log
+cpdap/*

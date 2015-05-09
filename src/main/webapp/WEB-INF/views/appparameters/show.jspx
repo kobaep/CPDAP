@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_com_foamtec_cpdap_domain_AppParameter" object="${appparameter}" path="/appparameters" z="P5Wdp/iWWjAd8rrCDgm3jfuIxHk=">
+        <field:display field="createdBy" id="s_com_foamtec_cpdap_domain_AppParameter_createdBy" object="${appparameter}" z="0CMIB/ud1B/L2cQh5cbcP6QPlVs="/>
+        <field:display field="updatedBy" id="s_com_foamtec_cpdap_domain_AppParameter_updatedBy" object="${appparameter}" z="yQ8EXWP4oGiY41zRJwMr0zSObUA="/>
+        <field:display field="status" id="s_com_foamtec_cpdap_domain_AppParameter_status" object="${appparameter}" z="23N+1do+Rm0ZqSY0LNPDUmNfMv4="/>
+        <field:display date="true" dateTimePattern="${appParameter_createddate_date_format}" field="createdDate" id="s_com_foamtec_cpdap_domain_AppParameter_createdDate" object="${appparameter}" z="gciupxHZQvRQUhRprUsw8zaxPmA="/>
+        <field:display date="true" dateTimePattern="${appParameter_updateddate_date_format}" field="updatedDate" id="s_com_foamtec_cpdap_domain_AppParameter_updatedDate" object="${appparameter}" z="D2NQH08wQ6KPig0IH1JjtJN9dz4="/>
+        <field:display field="code" id="s_com_foamtec_cpdap_domain_AppParameter_code" object="${appparameter}" z="XUYoC4EwoKudD77J1yyDcpfvpcM="/>
+        <field:display field="parameterDescription" id="s_com_foamtec_cpdap_domain_AppParameter_parameterDescription" object="${appparameter}" z="vlUSRsYqPmNbxjAZqymJ8lZ6NEg="/>
+    </page:show>
+</div>

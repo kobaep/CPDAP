@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_com_foamtec_cpdap_domain_AppParameter" items="${appparameters}" z="QqJJ0NQEat73yIpbII0cKY6dkF8=">
+        <table:table data="${appparameters}" id="l_com_foamtec_cpdap_domain_AppParameter" path="/appparameters" z="ko9drXBuA4w+4efk6EJlg8Q4yQM=">
+            <table:column id="c_com_foamtec_cpdap_domain_AppParameter_createdBy" property="createdBy" z="bxFURlUla7njQ8p5usQJpFxD8Mk="/>
+            <table:column id="c_com_foamtec_cpdap_domain_AppParameter_updatedBy" property="updatedBy" z="gbM14f/8EZDQtiR474RK8cvgXPg="/>
+            <table:column id="c_com_foamtec_cpdap_domain_AppParameter_status" property="status" z="954GYOQyp9soSj3KlYY4+j8d0w8="/>
+            <table:column date="true" dateTimePattern="${appParameter_createddate_date_format}" id="c_com_foamtec_cpdap_domain_AppParameter_createdDate" property="createdDate" z="xXpEqZTfBmQNoNEI7RRPC+37UiY="/>
+            <table:column date="true" dateTimePattern="${appParameter_updateddate_date_format}" id="c_com_foamtec_cpdap_domain_AppParameter_updatedDate" property="updatedDate" z="zf97fGfuJCdP2I/0c+jzLkQSSho="/>
+            <table:column id="c_com_foamtec_cpdap_domain_AppParameter_code" property="code" z="0np9F9AibAN/67hAEzt3y9WmtCg="/>
+        </table:table>
+    </page:list>
+</div>
