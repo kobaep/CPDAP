@@ -1,0 +1,5 @@
+#gnore case
+target/*
+.idea/*
+cpdap.iml
+derby.log
