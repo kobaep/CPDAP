@@ -1,13 +1,140 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
 	<jsp:output omit-xml-declaration="yes"/>
 	
 	<jsp:directive.attribute name="id" type="java.lang.String" required="true" rtexprvalue="true" description="The identifier for this tag (do not change!)"/>
 	<jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
 	<jsp:directive.attribute name="z" type="java.lang.String" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)"/>
-	
-	<c:if test="${empty render or render}">
-		<ul id="${fn:escapeXml(id)}">
-			<jsp:doBody />
-		</ul>
-	</c:if>
+
+    <style>
+        /* Navigation Left Side Bar Color */
+        /* Button */
+        a.nav-expander {
+            background: none repeat scroll 0 0 #2a6496;
+            color: #ffffff;
+            display: block;
+            height: 50px;
+            padding: 1em 1.6em 1em;
+            position: absolute;
+            text-decoration: none;
+            transition: left 0.3s ease-in-out 0s;
+            z-index: 12;
+
+            transition: left 0.3s ease-in-out 0s;
+            -webkit-transition: left 0.3s ease-in-out 0s;
+            -moz-transition: left 0.3s ease-in-out 0s;
+            -o-transition: left 0.3s ease-in-out 0s;
+        }
+        a.nav-expander:hover {
+            cursor: pointer;
+        }
+        a.nav-expander.fixed {
+            top: 5em;
+            left: 0em;
+            position: fixed;
+            padding-left: 10px;
+            padding-right: 10px;
+
+            -webkit-border-top-right-radius: 4px;
+            -webkit-border-bottom-right-radius: 4px;
+            -moz-border-radius-topright: 4px;
+            -moz-border-radius-bottomright: 4px;
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+        .nav-expanded a.nav-expander.fixed {
+            left: 16em;
+        }
+        /* Left Side Menu Layout */
+        nav {
+            background: #2a6496;
+            display: block;
+            height: 100%;
+            overflow: auto;
+            position: fixed;
+            left: -16em;
+            width: 16em;
+            z-index: 2000;
+
+            transition: left 0.3s ease-in-out 0s;
+            -webkit-transition: left 0.3s ease-in-out 0s;
+            -moz-transition: left 0.3s ease-in-out 0s;
+            -o-transition: left 0.3s ease-in-out 0s;
+        }
+        .nav-expanded nav {
+            left: 0;
+        }
+        body.nav-expanded {
+            margin-left: 0em;
+            transition: left 0.4s ease-in-out 0s;
+            -webkit-transition: left 0.4s ease-in-out 0s;
+            -moz-transition: left 0.4s ease-in-out 0s;
+            -o-transition: left 0.4s ease-in-out 0s;
+        }
+        #nav-close {
+            font-size: 1.5em;
+            padding-left: 10px;
+        }
+        /* Left Side Menu */
+        .main-menu {
+            padding-top: 12px;
+        }
+        .main-menu li {
+            border-bottom: 1px solid #323949;
+            margin-left: 20px;
+            margin-right: 20px;
+            /*font-size: 18px;*/
+            padding: 12px;
+        }
+        .main-menu li a {
+            color: #dddddd;
+            text-decoration: none;
+        }
+        .main-menu li a:hover {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        /* Left Side Menu Head */
+        .nav-menu-head {
+            font-size: 1.2em;
+            color: white;
+            margin-top: 2em;
+        }
+    </style>
+    <nav>
+        <ul class="list-unstyled main-menu">
+            <li class="nav-menu-head">CPDAP</li>
+        </ul>
+    </nav>
+    <div class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"><jsp:text/></span>
+                    <span class="icon-bar"><jsp:text/></span>
+                    <span class="icon-bar"><jsp:text/></span>
+                </button>
+                <spring:url value="/" var="dash_board_url" />
+                <spring:url value="/resources/images/ess-brand.png" var="image_brand_url" />
+                <a class="navbar-brand" href="${fn:escapeXml(dash_board_url)}" title="${menu_category_home}">CPDAP</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                <c:if test="${empty render or render}">
+                    <ul id="${fn:escapeXml(id)}" class="nav navbar-nav">
+                        <jsp:doBody />
+                    </ul>
+                </c:if>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        <![CDATA[
+
+        $(document).ready(function() {
+
+
+        });
+
+        ]]>
+    </script>
 </jsp:root>
