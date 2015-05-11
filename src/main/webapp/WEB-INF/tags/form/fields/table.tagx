@@ -1,202 +1,294 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:spring="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
-  <jsp:directive.tag import="java.util.ArrayList" />
-  <jsp:output omit-xml-declaration="yes" />
+    <jsp:directive.tag import="java.util.ArrayList" />
+    <jsp:output omit-xml-declaration="yes" />
 
-  <jsp:directive.attribute name="id" type="java.lang.String" required="true" rtexprvalue="true" description="The identifier for this tag (do not change!)" />
-  <jsp:directive.attribute name="data" type="java.util.Collection" required="true" rtexprvalue="true" description="The collection to be displayed in the table" />
-  <jsp:directive.attribute name="path" type="java.lang.String" required="true" rtexprvalue="true" description="Specify the URL path" />
-  <jsp:directive.attribute name="typeIdFieldName" type="java.lang.String" required="false" rtexprvalue="true" description="The identifier field name for the type (defaults to 'id')" />
-  <jsp:directive.attribute name="create" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'create' link into table (default true)" />
-  <jsp:directive.attribute name="update" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'update' link into table (default true)" />
-  <jsp:directive.attribute name="delete" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'delete' link into table (default true)" />
-  <jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
-  <jsp:directive.attribute name="z" type="java.lang.String" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
+    <jsp:directive.attribute name="id" type="java.lang.String" required="true" rtexprvalue="true" description="The identifier for this tag (do not change!)" />
+    <jsp:directive.attribute name="data" type="java.util.Collection" required="true" rtexprvalue="true" description="The collection to be displayed in the table" />
+    <jsp:directive.attribute name="path" type="java.lang.String" required="true" rtexprvalue="true" description="Specify the URL path" />
+    <jsp:directive.attribute name="typeIdFieldName" type="java.lang.String" required="false" rtexprvalue="true" description="The identifier field name for the type (defaults to 'id')" />
+    <jsp:directive.attribute name="create" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'create' link into table (default true)" />
+    <jsp:directive.attribute name="update" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'update' link into table (default true)" />
+    <jsp:directive.attribute name="delete" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'delete' link into table (default true)" />
+    <jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
+    <jsp:directive.attribute name="z" type="java.lang.String" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
+    <jsp:directive.attribute name="mode" type="java.lang.String" required="false" rtexprvalue="true" description="default none, or list, or approve" />
 
-  <c:if test="${empty render or render}">
+    <c:if test="${empty render or render}">
 
-    <c:set var="columnProperties" scope="request" />
-    <c:set var="columnLabels" scope="request" />
-    <c:set var="columnMaxLengths" scope="request" />
-    <c:set var="columnTypes" scope="request" />
-    <c:set var="columnDatePatterns" scope="request" />
-    <c:set var="columnSortProperties" scope="request" />
-    
-    <jsp:doBody />
+        <c:set var="columnProperties" scope="request" />
+        <c:set var="columnLabels" scope="request" />
+        <c:set var="columnMaxLengths" scope="request" />
+        <c:set var="columnTypes" scope="request" />
+        <c:set var="columnDatePatterns" scope="request" />
+        <c:set var="columnSortProperties" scope="request" />
 
-    <c:if test="${empty typeIdFieldName}">
-      <c:set var="typeIdFieldName" value="id" />
-    </c:if>
+        <jsp:doBody />
 
-    <c:if test="${empty update}">
-      <c:set var="update" value="true" />
-    </c:if>
+        <c:if test="${empty typeIdFieldName}">
+            <c:set var="typeIdFieldName" value="id" />
+        </c:if>
 
-    <c:if test="${empty delete}">
-      <c:set var="delete" value="true" />
-    </c:if>
+        <c:if test="${empty update}">
+            <c:set var="update" value="true" />
+        </c:if>
 
-    <spring:message var="typeName" code="menu_item_${fn:toLowerCase(fn:split(id,'_')[fn:length(fn:split(id,'_')) - 1])}_new_label" htmlEscape="false" />
-    <c:set var="lengths" value="${fn:split(columnMaxLengths, '&#9999;')}" scope="request" />
-    <c:set var="types" value="${fn:split(columnTypes, '&#9999;')}" scope="request" />
-    <c:set var="patterns" value="${fn:split(columnDatePatterns, '&#9999;')}" scope="request" />
-    <c:set var="properties" value="${fn:split(columnProperties, '&#9999;')}" scope="request" />
-    <c:set var="sortProperties" value="${fn:split(columnSortProperties, '&#9999;')}" scope="request" />
-    
-    <spring:eval var="colCounter" expression="1" />
+        <c:if test="${empty delete}">
+            <c:set var="delete" value="true" />
+        </c:if>
 
-    <table>
-      <thead>
-        <tr>
-          <c:forTokens items="${columnLabels}" delims="${'&#9999;'}" var="columnHeading" varStatus="num">
-            <c:set var="columnProperty" value="${properties[num.count-1]}" />
-            <c:set var="sort" value="false" />
-            <c:forEach var="sortProperty" items="${sortProperties}">
-                <c:if test="${columnProperty eq sortProperty}">
-                    <c:set var="sort" value="true" />
+        <spring:message var="typeName" code="menu_item_${fn:toLowerCase(fn:split(id,'_')[fn:length(fn:split(id,'_')) - 1])}_new_label" htmlEscape="false" />
+        <c:set var="lengths" value="${fn:split(columnMaxLengths, '&#9999;')}" scope="request" />
+        <c:set var="types" value="${fn:split(columnTypes, '&#9999;')}" scope="request" />
+        <c:set var="patterns" value="${fn:split(columnDatePatterns, '&#9999;')}" scope="request" />
+        <c:set var="properties" value="${fn:split(columnProperties, '&#9999;')}" scope="request" />
+        <c:set var="sortProperties" value="${fn:split(columnSortProperties, '&#9999;')}" scope="request" />
+
+        <spring:eval var="colCounter" expression="1" />
+
+        <spring:url value="${path}/bs?form" var="new" />
+        <spring:url value="${path}/bs?other" var="other" />
+        <spring:message code="button_new" var="btnnew"/>
+        <spring:message code="button_other" var="btnother"/>
+        <spring:message code="button_cancel" var="btncancel"/>
+        <spring:message code="button_approve" var="btnapprove"/>
+        <spring:message code="button_reject" var="btnreject"/>
+        <spring:message code="button_send_back" var="btnsendback"/>
+
+        <div class="hidden-xs" style="margin-bottom: 10px;">
+            <div class="calendar-button">
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        <select class="form-control" autocomplete="off">
+                            <option class="placeholder" disabled="true" selected="true" value="">
+                                <spring:message code="global_other_sortby"/>
+                            </option>
+                            <option>id</option>
+                            <option>name</option>
+                            <option>version</option>
+                        </select>
+                    </div>&#160;
+                    <c:if test="${mode eq 'list'}">
+                        <a href="${new}" class="btn btn-primary">${btnnew}&#160;&#160;&#160;<span class="fa fa-plus-circle"><jsp:text/></span></a>&#160;
+                        <a href="${other}" class="btn btn-info">${btnother}&#160;&#160;&#160;<span class="fa fa-plus-circle"><jsp:text/></span></a>&#160;
+                        <button class="btn btn-danger" type="submit">${btncancel}&#160;&#160;&#160;<span class="fa fa-minus-circle"><jsp:text/></span></button>&#160;
+                    </c:if>
+                    <c:if test="${mode eq 'approve'}">
+                        <button class="btn btn-primary" type="submit">${btnapprove}&#160;&#160;&#160;<span class="fa fa-check-circle"><jsp:text/></span></button>&#160;
+                        <button class="btn btn-danger" type="submit">${btnreject}&#160;&#160;&#160;<span class="fa fa-times-circle"><jsp:text/></span></button>&#160;
+                        <button class="btn btn-warning" type="submit">${btnsendback}&#160;&#160;&#160;<span class="fa fa-exclamation-circle"><jsp:text/></span></button>&#160;
+                    </c:if>
+                </form>
+            </div>
+            <div class="calendar-button-right" style="margin-bottom: 20px;">
+                <c:if test="${not empty maxPages}">
+                    <div style="margin-top: 7px;">
+                        <util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />
+                    </div>
                 </c:if>
-            </c:forEach>
-            <c:choose>
-                <c:when test="${sort}">
-                    <c:set var="sortOrderSet" value="false" />
-                    <c:set var="sortOrderClass" value="sorting" />
-                    <spring:url value="" var="querySortUrl">
-                        <c:forEach items="${paramValues}" var="p">
-                            <c:if test="${p.key ne 'sortFieldName' and p.key ne 'sortOrder'}">
-                                <c:forEach var='value' items='${p.value}'>
-                                    <spring:param name="${p.key}" value="${value}" />
-                                </c:forEach>
-                            </c:if>
-                            <c:if test="${p.key eq 'sortOrder' and paramValues['sortFieldName'][0] eq columnProperty}">
-                                <c:set var="sortOrderSet" value="true" />
-                                <c:if test="${p.value[0] eq 'asc'}">
-                                    <spring:param name="sortOrder" value="desc" />
-                                    <c:set var="sortOrderClass" value="sorting_desc" />
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover" role="table">
+                <thead>
+                    <tr class="active">
+                        <th><input type="checkbox"><jsp:text/></input></th>
+                        <c:forTokens items="${columnLabels}" delims="${'&#9999;'}" var="columnHeading" varStatus="num">
+                            <c:set var="columnProperty" value="${properties[num.count-1]}" />
+                            <c:set var="sort" value="false" />
+                            <c:forEach var="sortProperty" items="${sortProperties}">
+                                <c:if test="${columnProperty eq sortProperty}">
+                                    <c:set var="sort" value="true" />
                                 </c:if>
-                                <c:if test="${p.value[0] eq 'desc'}">
-                                    <spring:param name="sortOrder" value="asc" />
-                                    <c:set var="sortOrderClass" value="sorting_asc" />
-                                </c:if>
-                            </c:if>
-                        </c:forEach>
-                        <spring:param name="sortFieldName" value="${columnProperty}" />
-                        <c:if test="${not sortOrderSet}">
-                            <spring:param name="sortOrder" value="asc" />
-                        </c:if>
-                    </spring:url>
-                    <th><a href="${querySortUrl}" class="${sortOrderClass}"><c:out value="${columnHeading}" /> <spring:eval var="colCounter" expression="colCounter  + 1" /></a></th>
-                </c:when>
-                <c:otherwise>
-                    <th><c:out value="${columnHeading}" /> <spring:eval var="colCounter" expression="colCounter  + 1" /></th>
-                </c:otherwise>
-            </c:choose>
-          </c:forTokens>
-          <th></th>
-          <c:if test="${update}">
-            <th></th>
-            <spring:eval var="colCounter" expression="colCounter  + 1" />
-          </c:if>
-          <c:if test="${delete}">
-            <th></th>
-            <spring:eval var="colCounter" expression="colCounter  + 1" />
-          </c:if>
-        </tr>
-      </thead>
-      <c:forEach items="${data}" var="item">
-        <tr>
-          <c:forTokens items="${columnProperties}" delims="${'&#9999;'}" var="column" varStatus="num">
-            <c:set var="columnMaxLength" value="${lengths[num.count-1]}" />
-            <c:set var="columnType" value="${types[num.count-1]}" />
-            <c:set var="columnDatePattern" value="${patterns[num.count-1]}" />
-            <td>
-              <c:choose>
-                <c:when test="${columnType eq 'date'}">
-                  <spring:escapeBody>
-                    <fmt:formatDate value="${item[column]}" pattern="${fn:escapeXml(columnDatePattern)}" var="colTxt" />
-                  </spring:escapeBody>
-                </c:when>
-                <c:when test="${columnType eq 'calendar'}">
-                  <spring:escapeBody>
-                    <fmt:formatDate value="${item[column].time}" pattern="${fn:escapeXml(columnDatePattern)}" var="colTxt"/>
-                  </spring:escapeBody>
-                </c:when>
-                <c:otherwise>
-                  <c:set var="colTxt">
-                    <spring:eval expression="item[column]" htmlEscape="false" />
-                  </c:set>
-                </c:otherwise>
-              </c:choose>
-              <c:if test="${columnMaxLength ge 0}">
-                <c:set value="${fn:substring(colTxt, 0, columnMaxLength)}" var="colTxt" />
-              </c:if>
-              <c:out value="${colTxt}" />
-            </td>
-          </c:forTokens>
-          <c:set var="itemId"><spring:eval expression="item[typeIdFieldName]"/></c:set>
-          <td class="utilbox">
-            <spring:url value="${path}/${itemId}" var="show_form_url" />
-            <spring:url value="/resources/images/show.png" var="show_image_url" />
-            <spring:message arguments="${typeName}" code="entity_show" var="show_label" htmlEscape="false" />
-            <a href="${show_form_url}" alt="${fn:escapeXml(show_label)}" title="${fn:escapeXml(show_label)}">
-              <img alt="${fn:escapeXml(show_label)}" class="image" src="${show_image_url}" title="${fn:escapeXml(show_label)}" />
-            </a>
-          </td>
-          <c:if test="${update}">
-            <td class="utilbox">
-              <spring:url value="${path}/${itemId}" var="update_form_url">
-                <spring:param name="form" />
-              </spring:url>
-              <spring:url value="/resources/images/update.png" var="update_image_url" />
-              <spring:message arguments="${typeName}" code="entity_update" var="update_label" htmlEscape="false" />
-              <a href="${update_form_url}" alt="${fn:escapeXml(update_label)}" title="${fn:escapeXml(update_label)}">
-                <img alt="${fn:escapeXml(update_label)}" class="image" src="${update_image_url}" title="${fn:escapeXml(update_label)}" />
-              </a>
-            </td>
-          </c:if>
-          <c:if test="${delete}">
-            <td class="utilbox">
-              <spring:url value="${path}/${itemId}" var="delete_form_url" />
-              <spring:url value="/resources/images/delete.png" var="delete_image_url" />
-              <form:form action="${delete_form_url}" method="DELETE">
-                <spring:message arguments="${typeName}" code="entity_delete" var="delete_label" htmlEscape="false" />
-                <c:set var="delete_confirm_msg">
-                  <spring:escapeBody javaScriptEscape="true">
-                    <spring:message code="entity_delete_confirm" />
-                  </spring:escapeBody>
-                </c:set>
-                <input alt="${fn:escapeXml(delete_label)}" class="image" src="${delete_image_url}" title="${fn:escapeXml(delete_label)}" type="image" value="${fn:escapeXml(delete_label)}" onclick="return confirm('${delete_confirm_msg}');" />
-                <c:if test="${not empty param.page}">
-                  <input name="page" type="hidden" value="1" />
+                            </c:forEach>
+                            <c:choose>
+                                <c:when test="${sort}">
+                                    <c:set var="sortOrderSet" value="false" />
+                                    <c:set var="sortOrderClass" value="sorting" />
+                                    <spring:url value="" var="querySortUrl">
+                                        <c:forEach items="${paramValues}" var="p">
+                                            <c:if test="${p.key ne 'sortFieldName' and p.key ne 'sortOrder'}">
+                                                <c:forEach var='value' items='${p.value}'>
+                                                    <spring:param name="${p.key}" value="${value}" />
+                                                </c:forEach>
+                                            </c:if>
+                                            <c:if test="${p.key eq 'sortOrder' and paramValues['sortFieldName'][0] eq columnProperty}">
+                                                <c:set var="sortOrderSet" value="true" />
+                                                <c:if test="${p.value[0] eq 'asc'}">
+                                                    <spring:param name="sortOrder" value="desc" />
+                                                    <c:set var="sortOrderClass" value="sorting_desc" />
+                                                </c:if>
+                                                <c:if test="${p.value[0] eq 'desc'}">
+                                                    <spring:param name="sortOrder" value="asc" />
+                                                    <c:set var="sortOrderClass" value="sorting_asc" />
+                                                </c:if>
+                                            </c:if>
+                                        </c:forEach>
+                                        <spring:param name="sortFieldName" value="${columnProperty}" />
+                                        <c:if test="${not sortOrderSet}">
+                                            <spring:param name="sortOrder" value="asc" />
+                                        </c:if>
+                                    </spring:url>
+                                    <th><a href="${querySortUrl}" class="${sortOrderClass}"><c:out value="${columnHeading}" /> <spring:eval var="colCounter" expression="colCounter  + 1" /></a></th>
+                                </c:when>
+                                <c:otherwise>
+                                    <th><c:out value="${columnHeading}" /><spring:eval var="colCounter" expression="colCounter  + 1" /></th>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forTokens>
+                        <th><jsp:text/></th>
+                        <th><jsp:text/></th>
+                        <th><jsp:text/></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${data}" var="item">
+                        <tr>
+                            <td><input type="checkbox"><jsp:text/></input></td>
+                            <c:forTokens items="${columnProperties}" delims="${'&#9999;'}" var="column" varStatus="num">
+                                <c:set var="columnMaxLength" value="${lengths[num.count-1]}" />
+                                <c:set var="columnType" value="${types[num.count-1]}" />
+                                <c:set var="columnDatePattern" value="${patterns[num.count-1]}" />
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${columnType eq 'date'}">
+                                            <spring:escapeBody>
+                                                <fmt:formatDate value="${item[column]}" pattern="${fn:escapeXml(columnDatePattern)}" var="colTxt" />
+                                            </spring:escapeBody>
+                                        </c:when>
+                                        <c:when test="${columnType eq 'calendar'}">
+                                            <spring:escapeBody>
+                                                <fmt:formatDate value="${item[column].time}" pattern="${fn:escapeXml(columnDatePattern)}" var="colTxt"/>
+                                            </spring:escapeBody>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:set var="colTxt">
+                                                <spring:eval expression="item[column]" htmlEscape="false" />
+                                            </c:set>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <c:if test="${columnMaxLength ge 0}">
+                                        <c:set value="${fn:substring(colTxt, 0, columnMaxLength)}" var="colTxt" />
+                                    </c:if>
+                                    <c:out value="${colTxt}" />
+                                </td>
+                            </c:forTokens>
+                            <c:set var="itemId"><spring:eval expression="item[typeIdFieldName]"/></c:set>
+                            <spring:url value="${path}/${itemId}" var="detail_form_url" />
+                            <c:choose>
+                                <c:when test="${mode eq 'list' and not empty mode}">
+                                    <spring:url value="${path}/bs/${itemId}?form" var="detail_form_url" />
+                                    <td colspan="3"><a class="btn btn-primary" href="${detail_form_url}"><spring:message code="global_other_detail"/>&#160;&#160;&#160;<span class="fa fa-search"><jsp:text/></span></a></td>
+                                </c:when>
+                                <c:when test="${mode eq 'approve' and not empty mode}">
+                                    <spring:url value="${path}/bs/${itemId}" var="detail_form_url" />
+                                    <td colspan="3"><a class="btn btn-primary" href="${detail_form_url}"><spring:message code="global_other_detail"/>&#160;&#160;&#160;<span class="fa fa-search"><jsp:text/></span></a></td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td class="utilbox">
+                                        <spring:url value="${path}/${itemId}" var="show_form_url" />
+                                        <spring:url value="/resources/images/show.png" var="show_image_url" />
+                                        <spring:message arguments="${typeName}" code="entity_show" var="show_label" htmlEscape="false" />
+                                        <!--<a href="${show_form_url}" alt="${fn:escapeXml(show_label)}" title="${fn:escapeXml(show_label)}">-->
+                                            <!--<img alt="${fn:escapeXml(show_label)}" class="image" src="${show_image_url}" title="${fn:escapeXml(show_label)}" />-->
+                                        <!--</a>-->
+                                        <a href="${show_form_url}" class="fa fa-file-text" title="${fn:escapeXml(show_label)}"><jsp:text/></a>
+                                    </td>
+                                    <c:if test="${update}">
+                                        <td class="utilbox">
+                                            <spring:url value="${path}/${itemId}" var="update_form_url">
+                                                <spring:param name="form" />
+                                            </spring:url>
+                                            <spring:url value="/resources/images/update.png" var="update_image_url" />
+                                            <spring:message arguments="${typeName}" code="entity_update" var="update_label" htmlEscape="false" />
+                                            <!--<a href="${update_form_url}" alt="${fn:escapeXml(update_label)}" title="${fn:escapeXml(update_label)}">-->
+                                                <!--<img alt="${fn:escapeXml(update_label)}" class="image" src="${update_image_url}" title="${fn:escapeXml(update_label)}" />-->
+                                            <!--</a>-->
+                                            <a href="${update_form_url}" class="fa fa-pencil" title="${fn:escapeXml(update_label)}"><jsp:text/></a>
+                                        </td>
+                                    </c:if>
+                                    <c:if test="${delete}">
+                                        <td class="utilbox">
+                                            <spring:url value="${path}/${itemId}" var="delete_form_url" />
+                                            <spring:url value="/resources/images/delete.png" var="delete_image_url" />
+                                            <form:form action="${delete_form_url}" method="DELETE">
+                                                <spring:message arguments="${typeName}" code="entity_delete" var="delete_label" htmlEscape="false" />
+                                                <c:set var="delete_confirm_msg">
+                                                    <spring:escapeBody javaScriptEscape="true">
+                                                        <spring:message code="entity_delete_confirm" />
+                                                    </spring:escapeBody>
+                                                </c:set>
+                                                <!--<input style="margin-top: 3px;" alt="${fn:escapeXml(delete_label)}" class="image" src="${delete_image_url}" title="${fn:escapeXml(delete_label)}" type="image" value="${fn:escapeXml(delete_label)}" onclick="return confirm('${delete_confirm_msg}');" />-->
+                                                <span class="fa fa-trash cursor-pointer text-danger" title="${fn:escapeXml(delete_label)}" onclick="return confirm('${delete_confirm_msg}');"><jsp:text/></span>
+                                                <c:if test="${not empty param.page}">
+                                                    <input name="page" type="hidden" value="1" />
+                                                </c:if>
+                                                <c:if test="${not empty param.size}">
+                                                    <input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
+                                                </c:if>
+                                            </form:form>
+                                        </td>
+                                    </c:if>
+                                </c:otherwise>
+                            </c:choose>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </div>
+        <div class="hidden-xs" style="margin-bottom: 10px;">
+            <div class="calendar-button-right" style="margin-bottom: 20px;">
+                <c:if test="${not empty maxPages}">
+                    <util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />
                 </c:if>
-                <c:if test="${not empty param.size}">
-                  <input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
+            </div>
+        </div>
+        <div class="visible-xs" style="margin-bottom: 20px;">
+            <form class="form-inline" role="form">
+                <div class="form-group">
+                    <c:if test="${not empty maxPages}">
+                        <util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />
+                    </c:if>
+                </div>
+                <c:if test="${mode eq 'list'}">
+                    <div class="form-group">
+                        <a href="${new}" class="btn btn-primary btn-block">${btnnew}&#160;&#160;&#160;<span class="fa fa-plus-circle"><jsp:text/></span></a>
+                        <a href="${other}" class="btn btn-info btn-block">${btnother}&#160;&#160;&#160;<span class="fa fa-plus-circle"><jsp:text/></span></a>
+                        <button class="btn btn-danger btn-block" type="submit">${btncancel}&#160;&#160;&#160;<span class="fa fa-minus-circle"><jsp:text/></span></button>
+                    </div>
                 </c:if>
-              </form:form>
-            </td>
-          </c:if>
-        </tr>
-      </c:forEach>
-      <tr class="footer">
-        <td colspan="${colCounter}">
-          <c:if test="${empty create or create}">
-            <span class="new">
-              <spring:url value="${path}" var="create_url">
-                <spring:param name="form" />
-              </spring:url>
-              <a href="${create_url}">
-                <spring:url value="/resources/images/add.png" var="create_img_url" />
-                <spring:message arguments="${typeName}" code="global_menu_new" var="add_message" htmlEscape="false" />
-                <img alt="${fn:escapeXml(add_message)}" src="${create_img_url}" title="${fn:escapeXml(add_message)}" />
-              </a>
-            </span>
-            <c:out value=" " />
-          </c:if>
-          <c:if test="${not empty maxPages}">
-            <util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />
-          </c:if>
-        </td>
-      </tr>
-    </table>
+                <c:if test="${mode eq 'approve'}">
+                    <a href="${new}" class="btn btn-primary btn-block" type="submit">${btnapprove}&#160;&#160;&#160;<span class="fa fa-check-circle"><jsp:text/></span></a>
+                    <a href="${other}" class="btn btn-danger btn-block" type="submit">${btnreject}&#160;&#160;&#160;<span class="fa fa-times-circle"><jsp:text/></span></a>
+                    <button class="btn btn-warning btn-block" type="submit">${btnsendback}&#160;&#160;&#160;<span class="fa fa-exclamation-circle"><jsp:text/></span></button>
+                </c:if>
+            </form>
+        </div>
+    </c:if>
 
-  </c:if>
+    <script type="text/javascript">
+        <![CDATA[
+
+        // Checked All Checkbox Detail
+        $('thead > tr > th input[type=checkbox]').click(function(event) {
+            var table = $(event.target).closest('table');
+            session['other'].clear();
+            $('td input:checkbox', table).prop('checked', this.checked);
+            $('tbody > tr > td > input:checked').each(function(){
+                session['other'].push($(this).parent().parent().children('td:eq(1)').text());
+            });
+        });
+
+        // Checked By Line
+        $('tbody > tr > td input[type=checkbox]').click(function(){
+            session['other'].clear();
+            var element = $('tbody > tr > td');
+            ($('tbody > tr > td input[type=checkbox]').length == $('tbody > tr > td > input:checked').length)?$('th input:checkbox').prop('checked', true):$('th input:checkbox').prop('checked', false);
+            $('tbody > tr > td > input:checked').each(function(){
+                session['other'].push($(this).parent().parent().children('td:eq(1)').text());
+            });
+        });
+
+        ]]>
+    </script>
 
 </jsp:root>
