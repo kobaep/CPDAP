@@ -40,6 +40,24 @@
                     <input type="text" id="barcodeMasterSample" class="form-control" disabled="true"/>
                   </div>
                 </div>
+                <div id="sap" class="form-group">
+                  <label class="col-sm-4 control-label">CODE SAP</label>
+                  <div class="col-sm-8">
+                    <input type="text" id="codeSap" class="form-control" disabled="true"/>
+                  </div>
+                </div>
+                <div id="batch" class="form-group">
+                  <label class="col-sm-4 control-label">CODE BATCH</label>
+                  <div class="col-sm-8">
+                    <input type="text" id="codeBatch" class="form-control" disabled="true"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">P/N</label>
+                  <div class="col-sm-8">
+                    <input type="text" id="codePn" class="form-control" disabled="true"/>
+                  </div>
+                </div>
                 <div class="form-group">
                   <label for="inputBarcodeProduct" class="col-sm-4 control-label">BARCODE PRODUCT</label>
                   <div class="col-sm-8">
@@ -75,6 +93,9 @@
 
       var barcodeMaster = "";
       var barcodeProduct = "";
+      var codeSapMaster = "";
+      var codePNMaster = "";
+      var codeBatchMaster = "";
 
       $("#inputBarcodeMaster").focus();
 
@@ -87,14 +108,44 @@
               barcodeMaster += master.substring(i, i+1);
             }
           }
+          if(barcodeMaster.indexOf(".") > -1 && barcodeMaster.substring(1,3) == "DE") {
+            codeSapMaster = barcodeMaster.substring(0,15);
+            codePNMaster = barcodeMaster.substring(4,14);
+            codeBatchMaster = barcodeMaster.substring(15,25);
+            $("#barcodeMasterSample").val(barcodeMaster);
+            $("#codeSap").val(codeSapMaster);
+            $("#codeBatch").val(codeBatchMaster);
+            $("#codePn").val(codePNMaster);
+            $("#master").addClass("hidden");
+            $("#product").removeClass("hidden");
+            $("#inputBarcodeProduct").focus();
+          }
 
-          var str = barcodeMaster.split("{")
-          var sapNo = str[0];
+          if(barcodeMaster.indexOf(".") > -1 && barcodeMaster.substring(1,3) != "DE") {
+            codeSapMaster = barcodeMaster.substring(0,15);
+            codePNMaster = barcodeMaster.substring(4,15);
+            codeBatchMaster = barcodeMaster.substring(15,25);
+            $("#barcodeMasterSample").val(barcodeMaster);
+            $("#codeSap").val(codeSapMaster);
+            $("#codeBatch").val(codeBatchMaster);
+            $("#codePn").val(codePNMaster);
+            $("#master").addClass("hidden");
+            $("#product").removeClass("hidden");
+            $("#inputBarcodeProduct").focus();
+          }
 
-          $("#barcodeMasterSample").val(sapNo);
-          $("#master").addClass("hidden");
-          $("#product").removeClass("hidden");
-          $("#inputBarcodeProduct").focus();
+          if(barcodeMaster.indexOf("{") > -1) {
+            var str = barcodeMaster.split("{")
+            codePNMaster = str[0];
+            $("#barcodeMasterSample").val(barcodeMaster);
+            $("#codePn").val(codePNMaster);
+            $("#sap").addClass("hidden");
+            $("#batch").addClass("hidden");
+            $("#master").addClass("hidden");
+            $("#product").removeClass("hidden");
+            $("#inputBarcodeProduct").focus();
+          }
+
           return false;
         }
       });
@@ -109,23 +160,61 @@
             }
           }
 
-          var str = barcodeProduct.split("{")
-          var sapNo = str[0];
-
-          $("#barcodeProductSample").text(sapNo);
-
-          if(barcodeMaster == barcodeProduct) {
-            $("#symbolFail").addClass("hidden");
-            $("#symbolPass").removeClass("hidden");
-            barcodeProduct = "";
-            $(this).val("");
-          } else {
-            $("#symbolPass").addClass("hidden");
-            $("#symbolFail").removeClass("hidden");
-            barcodeProduct = "";
-            $(this).val("");
+          if(barcodeProduct.indexOf(".") > -1 && barcodeProduct.substring(1,3) == "DE") {
+            var codeSap = barcodeProduct.substring(0,15);
+            var codePN = barcodeProduct.substring(4,14);
+            var codeBatch = barcodeProduct.substring(15,25);
+            if(codePNMaster == codePN && codeBatchMaster == codeBatch) {
+              $("#barcodeProductSample").text(codePN);
+              $("#symbolFail").addClass("hidden");
+              $("#symbolPass").removeClass("hidden");
+              barcodeProduct = "";
+              $(this).val("");
+            } else {
+              $("#barcodeProductSample").text(codePN);
+              $("#symbolPass").addClass("hidden");
+              $("#symbolFail").removeClass("hidden");
+              barcodeProduct = "";
+              $(this).val("");
+            }
           }
 
+          if(barcodeProduct.indexOf(".") > -1 && barcodeProduct.substring(1,3) != "DE") {
+            var codeSap = barcodeProduct.substring(0,15);
+            var codePN = barcodeProduct.substring(4,15);
+            var codeBatch = barcodeProduct.substring(15,25);
+            if(codePNMaster == codePN && codeBatchMaster == codeBatch) {
+              $("#barcodeProductSample").text(codePN);
+              $("#symbolFail").addClass("hidden");
+              $("#symbolPass").removeClass("hidden");
+              barcodeProduct = "";
+              $(this).val("");
+            } else {
+              $("#barcodeProductSample").text(codePN);
+              $("#symbolPass").addClass("hidden");
+              $("#symbolFail").removeClass("hidden");
+              barcodeProduct = "";
+              $(this).val("");
+            }
+          }
+
+          if (barcodeProduct.indexOf("{") > -1) {
+            var str = barcodeProduct.split("{")
+            var codePN = str[0];
+            if(codePNMaster == codePN) {
+              $("#barcodeProductSample").text(codePN);
+              $("#symbolFail").addClass("hidden");
+              $("#symbolPass").removeClass("hidden");
+              barcodeProduct = "";
+              $(this).val("");
+            } else {
+              $("#barcodeProductSample").text(codePN);
+              $("#symbolPass").addClass("hidden");
+              $("#symbolFail").removeClass("hidden");
+              barcodeProduct = "";
+              $(this).val("");
+            }
+          }
           return false;
         }
       });
